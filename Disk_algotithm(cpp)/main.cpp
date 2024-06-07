@@ -23,7 +23,10 @@ int main(int argc, char const *argv[]) {
     int choice;
 
     // 直到用户选择退出
-        // 显示菜单
+       
+    while (choice!=5)
+    {
+         // 显示菜单
         meun();
         
         // 获取用户输入
@@ -34,25 +37,34 @@ int main(int argc, char const *argv[]) {
             case 1:
                 // 先来先服务 (FCFS) 算法
                 requests.FCFS(requests, head);
+                cout<<'\n';
                 break;
             case 2:
                 // 最短寻道时间优先 (SSTF) 算法
                 requests.SSTF(requests, head);
+                cout<<'\n';
                 break;
             case 3:
                 // 扫描 (SCAN) 算法
                 requests.SCAN(requests, head);
+                cout<<'\n';
                 break;
             case 4:
                 // 循环扫描 (C-SCAN) 算法
                 requests.CSCAN(requests, head);
+                cout<<'\n';
+                break;
+            case 5:
+                cout<<"成功退出！!\n";
+                cout<<'\n';
                 break;
             default:
                 // 无效的选项
                 cout << "无效的选项, Again!!!\n" << '\n';
+                cout<<'\n';
                 break;
         }
-
+    }
     return 0;
 }
 

@@ -3,13 +3,13 @@ TARGET=main
 OBJ=main.o Disk.o
 
 $(TARGET):$(OBJ)
-	$(CXX) -o $(TARGET) $(OBJ)
+	$(CXX) -g  -o  $(TARGET) $(OBJ)
 
 main.o:main.cpp
-	$(CXX) -c main.cpp
+	$(CXX) -g -c main.cpp
 
 Disk.o:Disk.cpp
-	$(CXX) -c Disk.cpp
+	$(CXX) -g -c Disk.cpp
 
 clean:
 	rm -f main main.o Disk.o 

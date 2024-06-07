@@ -1,6 +1,5 @@
 // Author: Leebrouse
 // Date: 2024/6/7
-
 #ifndef DISK_H
 #define DISK_H
 
@@ -19,22 +18,22 @@ public:
     Disk(std::vector<int> disk);
 
     // 先来先服务 (FCFS) 算法
-    void FCFS(Disk& requests, int head);
+    void FCFS(Disk requests, int head);
 
     // 最短寻道时间优先 (SSTF) 算法
-    void SSTF(Disk& requests, int head);
+    void SSTF(Disk requests, int head);
 
     // 扫描 (SCAN) 算法
-    void SCAN(Disk& requests, int head);
+    void SCAN(Disk requests, int head);
 
     // 循环扫描 (C-SCAN) 算法
-    void CSCAN(Disk& requests, int head);
+    void CSCAN(Disk requests, int head);
 
     // 打印磁盘请求向量
-    void printInfo(Disk& requests);
+    void printInfo(Disk requests);
 
     // 查找元素在向量中的索引
-    int indexElement(Disk& requests, int index);
+    int indexElement(Disk requests, int index);
 };
 
 #endif // DISK_H

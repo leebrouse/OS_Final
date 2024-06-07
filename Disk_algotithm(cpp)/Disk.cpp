@@ -10,12 +10,13 @@ Disk::Disk(std::vector<int> disk)
     : disk{disk} {}
 
 // 先来先服务 (FCFS) 算法
-void Disk::FCFS(Disk& requests, int head)
+void Disk::FCFS(Disk requests, int head)
 {    
     // 在向量开头插入初始磁头位置
     requests.disk.insert(requests.disk.begin(), head);
     std::cout << "FCFS排序: ";
     requests.printInfo(requests); // 打印排序后的磁盘请求向量
+    std::cout<<'\n';
 }
 
 // 比较函数，用于比较左右请求的距离
@@ -31,61 +32,59 @@ int compare(int left, int current, int right) {
     }
 }
 
-// 最短寻道时间优先 (SSTF) 算法
-void Disk::SSTF(Disk& requests, int head)
+void Disk::SSTF(Disk requests, int head)
 {
     // 将初始磁头位置加入请求向量，并排序
     requests.disk.push_back(head);
     std::sort(requests.disk.begin(), requests.disk.end());
 
     int headIndex = requests.indexElement(requests, head);
-    std::vector<bool> visited(requests.disk.size(), false); // 记录哪些请求已处理
-    visited[headIndex] = true;
 
     std::cout << "SSTF排序: ";
     std::cout << requests.disk[headIndex] << ' ';
 
     // 处理所有请求
-    for (int i = 1; i < requests.disk.size(); ++i)
+    for (int i = 0; i < requests.disk.size(); i++)
     {
-        int leftIndex = headIndex - 1;
-        int rightIndex = headIndex + 1;
-
-        // 跳过已访问的请求
-        while (leftIndex >= 0 && visited[leftIndex]) --leftIndex;
-        while (rightIndex < requests.disk.size() && visited[rightIndex]) ++rightIndex;
-
-        int choice;
-        if (leftIndex >= 0 && rightIndex < requests.disk.size()) {
-            choice = compare(requests.disk[leftIndex], requests.disk[headIndex], requests.disk[rightIndex]);
-        } else if (leftIndex >= 0) {
-            choice = -1; // 只能选左值
-        } else if (rightIndex < requests.disk.size()) {
-            choice = 1; // 只能选右值
-        } else {
-            break; // 没有更多的请求了
+        if (headIndex == 0) {
+            // 边界情况：磁头在最左边，由于在处理之前已经被sort排序则只需循环输出就可，最后break退出；
+            for (auto iter = requests.disk.begin()+1; iter != requests.disk.end(); iter++) {
+                std::cout << *iter << " ";
+            }
+            return;
         }
-
-        if (choice == -1) {
-            headIndex = leftIndex;
-        } else {
-            headIndex = rightIndex;
+        else if (headIndex == requests.disk.size() - 1) {
+            // 边界情况：磁头在最右边，由于在处理之前已经被sort排序则只需循环输出就可，最后break退出；
+            for (auto iter = requests.disk.begin()+1; iter != requests.disk.end(); iter++) {
+                std::cout << *iter << " ";
+            }
+            return;
         }
-
-        visited[headIndex] = true;
-        std::cout << requests.disk[headIndex] << ' ';
+        else {
+            // 在两个请求之间，继续处理
+            if (compare(requests.disk[headIndex-1],requests.disk[headIndex],requests.disk[headIndex+1])==-1) {
+                // 左侧请求更近，向左移动磁头，删除已经过的序号
+                std::cout << requests.disk[headIndex - 1] << " ";
+                requests.disk.erase(requests.disk.begin()+headIndex);
+                headIndex--;
+            }
+            else {
+                // 右侧请求更近，向右移动磁头，删除已经过的序号
+                std::cout << requests.disk[headIndex + 1] << " ";
+                requests.disk.erase(requests.disk.begin()+headIndex);
+                headIndex++;
+            }
+        }
     }
-
-    std::cout << std::endl;
+    std::cout<<'\n';
 }
 
+
 // 扫描 (SCAN) 算法
-void Disk::SCAN(Disk& requests, int head)
+void Disk::SCAN(Disk requests, int head)
 {   
-    // 将初始磁头位置、0和199加入请求向量，并排序
+    // 将初始磁头位置,并排序
     requests.disk.push_back(head);
-    requests.disk.push_back(0);
-    requests.disk.push_back(199);
     std::sort(requests.disk.begin(), requests.disk.end());
 
     int headIndex = requests.indexElement(requests, head);
@@ -98,17 +97,17 @@ void Disk::SCAN(Disk& requests, int head)
         std::cout << *iter << " ";
     }
 
-    // 从 headIndex + 1 开始向左处理请求
-    for (auto iter = requests.disk.rbegin() + (requests.disk.size() - headIndex - 1); iter != requests.disk.rend(); iter++)
+    // 从 headIndex - 1 开始向左处理请求
+    for (auto iter = requests.disk.begin()+headIndex-1; iter !=requests.disk.begin(); iter--)
     {
         std::cout << *iter << " ";
     }
 
-    std::cout << std::endl;
+    std::cout<<'\n';
 }
 
 // 循环扫描 (C-SCAN) 算法
-void Disk::CSCAN(Disk& requests, int head)
+void Disk::CSCAN(Disk requests, int head)
 {   
     // 将初始磁头位置、0和199加入请求向量，并排序
     requests.disk.push_back(head);
@@ -137,7 +136,7 @@ void Disk::CSCAN(Disk& requests, int head)
 }
 
 // 打印磁盘请求向量
-void Disk::printInfo(Disk& requests)
+void Disk::printInfo(Disk requests)
 {
     for (int request : requests.disk) {
         std::cout << request << " ";
@@ -146,7 +145,7 @@ void Disk::printInfo(Disk& requests)
 }
 
 // 查找元素在向量中的索引
-int Disk::indexElement(Disk& requests, int index)
+int Disk::indexElement(Disk requests, int index)
 {
     auto it = std::find(requests.disk.begin(), requests.disk.end(), index);
 
