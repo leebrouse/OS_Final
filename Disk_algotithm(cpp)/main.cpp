@@ -11,7 +11,7 @@ void meun();
 
 int main(int argc, char const *argv[]) {
     // 磁盘请求向量
-    vector<int> disk = {98, 183, 37, 122, 14, 124, 65, 67};
+    vector<int> disk = {98, 183, 37, 122, 20, 124, 40,51};
 
     // 创建 Disk 对象
     Disk requests(disk);
@@ -61,7 +61,6 @@ int main(int argc, char const *argv[]) {
             default:
                 // 无效的选项
                 cout << "无效的选项, Again!!!\n" << '\n';
-                cout<<'\n';
                 break;
         }
     }

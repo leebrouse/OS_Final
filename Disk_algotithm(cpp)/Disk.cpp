@@ -72,7 +72,7 @@ void Disk::SSTF(Disk requests, int head)
                 // 右侧请求更近，向右移动磁头，删除已经过的序号
                 std::cout << requests.disk[headIndex + 1] << " ";
                 requests.disk.erase(requests.disk.begin()+headIndex);
-                headIndex++;
+                // headIndex++;
             }
         }
     }
