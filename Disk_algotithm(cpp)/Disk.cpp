@@ -47,17 +47,19 @@ void Disk::SSTF(Disk requests, int head)
     for (int i = 0; i < requests.disk.size(); i++)
     {
         if (headIndex == 0) {
-            // 边界情况：磁头在最左边，由于在处理之前已经被sort排序则只需循环输出就可，最后break退出；
+            // 边界情况：磁头在最左边，由于在处理之前已经被sort排序则只需循环输出就可，最后return退出；
             for (auto iter = requests.disk.begin()+1; iter != requests.disk.end(); iter++) {
                 std::cout << *iter << " ";
             }
+            std::cout<<'\n';
             return;
         }
         else if (headIndex == requests.disk.size() - 1) {
-            // 边界情况：磁头在最右边，由于在处理之前已经被sort排序则只需循环输出就可，最后break退出；
+            // 边界情况：磁头在最右边，由于在处理之前已经被sort排序则只需循环输出就可，最后return退出；
             for (auto iter = requests.disk.begin()+1; iter != requests.disk.end(); iter++) {
                 std::cout << *iter << " ";
             }
+            std::cout<<'\n';
             return;
         }
         else {
@@ -156,7 +158,7 @@ int Disk::indexElement(Disk requests, int index)
         int idx = std::distance(requests.disk.begin(), it);
         return idx;
     } else {
-        std::cout << "未找到值为 " << index << " 的元素" << std::endl;
+        std::cout << "未找到值为%d " << index << " 的元素" << std::endl;
         return -1; // 返回一个无效的索引
     }
 }
